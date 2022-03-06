@@ -1,22 +1,36 @@
-import { Box, Center } from "native-base";
+import { Box, Button, Center, Image } from "native-base";
 import React from "react";
 import { IPhone } from "../../interfaces/phones";
 import DetailItem from "../detailItem/detailItem.component";
 
 interface Props {
   phone: IPhone;
+  imageUrl: string;
+  onDeletePhone: Function;
 }
 
 const DetailItemContainer = (props: Props) => {
-  const { phone } = props;
+  const { phone, imageUrl, onDeletePhone } = props;
 
-  const collection = Object.keys(phone);
   return (
     <Box>
       <Center>
-        {collection.map((item: string, i: number) => {
-          return <DetailItem title={item} value={phone[item]} key={i} />;
+        {Object.entries(phone).map(([key, value], i: number) => {
+          return key === "img" ? (
+            <Image
+              source={{
+                uri: `${imageUrl}${phone.img}`,
+              }}
+            />
+          ) : (
+            <DetailItem title={key} value={value} key={i} />
+          );
         })}
+        <Center flexDirection={"row"}>
+          <Button color={"red.500"} onPress={() => onDeletePhone(phone._id)}>
+            Delete
+          </Button>
+        </Center>
       </Center>
     </Box>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { IPhone } from "../interfaces/phones";
-import { getPhone } from "../services/phone.service";
+import { getPhone, deletePhone } from "../services/phone.service";
 
-const useDetail = (id: string) => {
+const useDetail = (id: string, goToHome: Function) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<IPhone>();
   const [hasError, setHasError] = useState<boolean>(false);
@@ -24,11 +24,28 @@ const useDetail = (id: string) => {
       });
   }, []);
 
+  const onDeletePhone = (id: string) => {
+    setIsLoading(true);
+    deletePhone(id)
+      .then(() => {
+        setIsLoading(false);
+        goToHome();
+      })
+      .catch((error) => {
+        setHasError(true);
+        setError(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return {
     data,
     error,
     hasError,
     isLoading,
+    onDeletePhone,
   };
 };
 
