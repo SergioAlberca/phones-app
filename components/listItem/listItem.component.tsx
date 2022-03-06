@@ -1,14 +1,16 @@
 import React from "react";
-import { Box, HStack, Avatar, VStack, Text, Spacer } from "native-base";
+import { Box, HStack, VStack, Text, Spacer, Icon } from "native-base";
+import { Entypo } from "@native-base/icons";
 import { IPhone } from "../../interfaces/phones";
 
 interface Props {
   phone: IPhone;
   imageUrl: string;
+  goToDetail: Function;
 }
 
 const ListItem = (props: Props) => {
-  const { phone, imageUrl } = props;
+  const { phone, goToDetail } = props;
 
   return (
     <Box
@@ -56,7 +58,11 @@ const ListItem = (props: Props) => {
           color="coolGray.800"
           alignSelf="flex-start"
         >
-          {phone.price}
+          <Icon
+            as={Entypo}
+            name="eye"
+            onPress={() => goToDetail(phone._id)}
+          ></Icon>
         </Text>
       </HStack>
     </Box>
