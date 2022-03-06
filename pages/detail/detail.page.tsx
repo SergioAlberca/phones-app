@@ -1,21 +1,31 @@
 import React from "react";
 import {
+  Box,
   Center,
   Container,
-  Heading,
   NativeBaseProvider,
   Text,
+  Image,
+  Button,
 } from "native-base";
+import useDetail from "../../hooks/detail";
+import Loading from "../../components/loading/loading.component";
+import DetailItemContainer from "../../components/detailItemsContainer/detailItemsContainer.component";
 
-const DetailPage = () => {
+const DetailPage = (props: any) => {
+  const { data, isLoading } = useDetail(props.route.params.id);
+
   return (
     <NativeBaseProvider>
       <Center>
         <Container>
-          <Heading>
-            DetailPage
-            <Text color="emerald.500"> Aquí el detalle de teléfonos</Text>
-          </Heading>
+          <Box>
+            {!isLoading && data ? (
+              <DetailItemContainer phone={data} />
+            ) : (
+              <Loading />
+            )}
+          </Box>
         </Container>
       </Center>
     </NativeBaseProvider>
