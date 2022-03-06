@@ -25,4 +25,16 @@ const getPhone = (id: string) => {
   });
 };
 
-export { getPhone, getPhones };
+const deletePhone = (id: string) => {
+  return new Promise<{}>((resolve, reject) => {
+    fetch(`${CONSTANTS.BASE_URL}/phone/${id}`, { method: "DELETE" })
+      .then(() => {
+        resolve({});
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export { getPhone, getPhones, deletePhone };

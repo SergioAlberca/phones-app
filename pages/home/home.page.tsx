@@ -5,12 +5,7 @@ import useHome from "../../hooks/home";
 import { CONSTANTS } from "../../utils/constants";
 import Loading from "../../components/loading/loading.component";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-
-type DetailPageParamList = {
-  Details: { id: string };
-};
-type DetailPageProp = StackNavigationProp<DetailPageParamList, "Details">;
+import { DetailPageProp } from "../../interfaces/routes";
 
 const HomePage = () => {
   const { data, isLoading } = useHome();
