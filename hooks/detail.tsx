@@ -6,38 +6,38 @@ const useDetail = (id: string, goToHome: Function) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<IPhone>();
   const [hasError, setHasError] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    setIsLoading(true);
-    getPhone(id)
-      .then((data) => {
-        setData(data.phone);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setHasError(true);
-        setError(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    getDetailPhone();
   }, []);
 
-  const onDeletePhone = (id: string) => {
-    setIsLoading(true);
-    deletePhone(id)
-      .then(() => {
-        setIsLoading(false);
-        goToHome();
-      })
-      .catch((error) => {
-        setHasError(true);
-        setError(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  const getDetailPhone = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const phone = await getPhone(id);
+      setData(phone.phone);
+      setIsLoading(false);
+    } catch (err: any) {
+      console.log(err);
+      debugger;
+      setError(err.message);
+      setHasError(true);
+      setIsLoading(false);
+    }
+  };
+
+  const onDeletePhone = async (id: string): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const phone = await deletePhone(id);
+      setIsLoading(false);
+      goToHome();
+    } catch (error: any) {
+      setHasError(true);
+      setError(error);
+      setIsLoading(false);
+    }
   };
 
   return {

@@ -1,16 +1,16 @@
 import { Box } from "native-base";
 import React from "react";
 import { FlatList } from "react-native";
-import { IPhone } from "../../interfaces/phones";
+import { IPhoneList } from "../../interfaces/phones";
 import ListItem from "../listItem/listItem.component";
 
 interface Props {
   imageUrl: string;
-  phones: IPhone[];
+  phones: IPhoneList[];
   goToDetail: Function;
 }
 
-const PhoneList = (props: Props) => {
+const PhoneList: React.FC<Props> = (props: Props) => {
   const { imageUrl, phones, goToDetail } = props;
 
   return (
@@ -20,7 +20,7 @@ const PhoneList = (props: Props) => {
         renderItem={({ item }) => (
           <ListItem goToDetail={goToDetail} phone={item} imageUrl={imageUrl} />
         )}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item.name}
       />
     </Box>
   );

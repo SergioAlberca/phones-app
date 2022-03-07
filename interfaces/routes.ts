@@ -1,5 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
+export type RootStackParamList = {
+  Home: { reload: boolean };
+  Details: { id: string };
+};
+
 type DetailPageParamList = {
   Details: { id: string };
 };
@@ -9,6 +14,6 @@ export type DetailPageProp = StackNavigationProp<
 >;
 
 type HomePageParamList = {
-  Home: undefined;
+  Home: { reload: boolean };
 };
 export type HomePageProp = StackNavigationProp<HomePageParamList, "Home">;

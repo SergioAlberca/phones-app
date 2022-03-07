@@ -6,7 +6,7 @@ interface Props {
   value: string;
 }
 
-const DetailItem = (props: Props) => {
+const DetailItem: React.FC<Props> = (props: Props) => {
   const { title, value } = props;
 
   return (

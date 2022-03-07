@@ -1,15 +1,15 @@
 import React from "react";
 import { Box, HStack, VStack, Text, Spacer, Icon } from "native-base";
 import { Entypo } from "@native-base/icons";
-import { IPhone } from "../../interfaces/phones";
+import { IPhoneList } from "../../interfaces/phones";
 
 interface Props {
-  phone: IPhone;
+  phone: IPhoneList;
   imageUrl: string;
   goToDetail: Function;
 }
 
-const ListItem = (props: Props) => {
+const ListItem: React.FC<Props> = (props: Props) => {
   const { phone, goToDetail } = props;
 
   return (
