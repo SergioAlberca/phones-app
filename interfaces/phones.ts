@@ -10,3 +10,10 @@ export interface IPhone {
   ram: string;
   screen: string;
 }
+
+export interface IPhoneList {
+  _id: string;
+  name: string;
+  manuFacturer: string;
+  img?: string;
+}

@@ -1,28 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { IPhone } from "../interfaces/phones";
+import { useEffect, useState } from "react";
+import { IPhoneList } from "../interfaces/phones";
 import { getPhones } from "../services/phone.service";
 
-const useHome = () => {
+const useHome = (navigation: any, route: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<Array<IPhone>>([]);
+  const [data, setData] = useState<Array<IPhoneList>>([]);
   const [hasError, setHasError] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    setIsLoading(true);
-    getPhones
-      .then((data) => {
-        setData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setHasError(true);
-        setError(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    getListPhones();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (route?.params?.reload) {
+        getListPhones();
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const getListPhones = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const phones = await getPhones();
+      setData(phones);
+      setIsLoading(false);
+    } catch (error: any) {
+      setHasError(true);
+      setError(error);
+      setIsLoading(false);
+    }
+  };
 
   return {
     data,

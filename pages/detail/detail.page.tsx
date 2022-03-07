@@ -4,19 +4,23 @@ import useDetail from "../../hooks/detail";
 import Loading from "../../components/loading/loading.component";
 import DetailItemContainer from "../../components/detailItemsContainer/detailItemsContainer.component";
 import { useNavigation } from "@react-navigation/native";
-import { HomePageProp } from "../../interfaces/routes";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { HomePageProp, RootStackParamList } from "../../interfaces/routes";
 import { CONSTANTS } from "../../utils/constants";
+import Message from "../../components/message/message";
 
-const DetailPage = (props: any) => {
+type Props = NativeStackScreenProps<RootStackParamList, "Details">;
+
+const DetailPage: React.FC<Props> = ({ route }: Props) => {
   const navigation = useNavigation<HomePageProp>();
   const imageUrl = CONSTANTS.IMAGE_URL;
 
   const goToHome = (id: string) => {
-    navigation.navigate("Home");
+    navigation.navigate("Home", { reload: true });
   };
 
-  const { data, isLoading, onDeletePhone } = useDetail(
-    props.route.params.id,
+  const { data, isLoading, onDeletePhone, hasError, error } = useDetail(
+    route.params.id,
     goToHome
   );
 
@@ -25,15 +29,15 @@ const DetailPage = (props: any) => {
       <Center>
         <Container>
           <Box>
-            {!isLoading && data ? (
+            {isLoading && <Loading />}
+            {!isLoading && data && (
               <DetailItemContainer
                 phone={data}
                 imageUrl={imageUrl}
                 onDeletePhone={onDeletePhone}
               />
-            ) : (
-              <Loading />
             )}
+            {hasError && <Message status={"error"} title={error} />}
           </Box>
         </Container>
       </Center>

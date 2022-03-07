@@ -1,40 +1,35 @@
-import { IPhone } from "../interfaces/phones";
+import { IPhone, IPhoneList } from "../interfaces/phones";
 import { CONSTANTS } from "../utils/constants";
 
-const getPhones = new Promise<IPhone[]>((resolve, reject) => {
-  fetch(`${CONSTANTS.BASE_URL}/phones`, {})
-    .then((data) => {
-      const phones = data.json();
-      resolve(phones);
-    })
-    .catch((error) => {
-      reject(error);
-    });
-});
+const getPhones = async (): Promise<IPhoneList[]> => {
+  const response = await fetch(`${CONSTANTS.BASE_URL}/phones`, {});
 
-const getPhone = (id: string) => {
-  return new Promise<{ phone: IPhone }>((resolve, reject) => {
-    fetch(`${CONSTANTS.BASE_URL}/phone/${id}`, {})
-      .then((data) => {
-        const phone = data.json();
-        resolve(phone);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return response.json();
 };
 
-const deletePhone = (id: string) => {
-  return new Promise<{}>((resolve, reject) => {
-    fetch(`${CONSTANTS.BASE_URL}/phone/${id}`, { method: "DELETE" })
-      .then(() => {
-        resolve({});
-      })
-      .catch((error) => {
-        reject(error);
-      });
+const getPhone = async (id: string): Promise<{ phone: IPhone }> => {
+  const response = await fetch(`${CONSTANTS.BASE_URL}/phone/${id}`, {});
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return response.json();
+};
+
+const deletePhone = async (id: string): Promise<{}> => {
+  const response = await fetch(`${CONSTANTS.BASE_URL}/phone/${id}`, {
+    method: "DELETE",
   });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return response.json();
 };
 
 export { getPhone, getPhones, deletePhone };

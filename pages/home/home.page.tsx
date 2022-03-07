@@ -5,15 +5,19 @@ import useHome from "../../hooks/home";
 import { CONSTANTS } from "../../utils/constants";
 import Loading from "../../components/loading/loading.component";
 import { useNavigation } from "@react-navigation/native";
-import { DetailPageProp } from "../../interfaces/routes";
+import { DetailPageProp, RootStackParamList } from "../../interfaces/routes";
+import Message from "../../components/message/message";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const HomePage = () => {
-  const { data, isLoading } = useHome();
-  const navigation = useNavigation<DetailPageProp>();
+type Props = NativeStackScreenProps<RootStackParamList, "Home">;
+
+const HomePage: React.FC<any> = ({ navigation, route }: Props) => {
+  const { data, isLoading, error, hasError } = useHome(navigation, route);
+  const Navigation = useNavigation<DetailPageProp>();
   const imageUrl = CONSTANTS.IMAGE_URL;
 
   const goToDetail = (id: string) => {
-    navigation.navigate("Details", { id });
+    Navigation.navigate("Details", { id });
   };
 
   return (
@@ -28,6 +32,7 @@ const HomePage = () => {
       ) : (
         <Loading />
       )}
+      {hasError && <Message status="error" title={error} />}
     </NativeBaseProvider>
   );
 };

@@ -9,7 +9,7 @@ interface Props {
   onDeletePhone: Function;
 }
 
-const DetailItemContainer = (props: Props) => {
+const DetailItemContainer: React.FC<Props> = (props: Props) => {
   const { phone, imageUrl, onDeletePhone } = props;
 
   return (
